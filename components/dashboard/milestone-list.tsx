@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { Check, Circle, Calendar, Trash2, MoreVertical } from "lucide-react";
+import { Check, Circle, Calendar, Trash2, MoreVertical, Pencil } from "lucide-react";
 import { toggleMilestoneStatus, deleteMilestone } from "@/app/actions/milestones";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -12,6 +12,7 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { EditMilestoneDialog } from "@/components/forms/edit-milestone-dialog";
 import type { Milestone } from "@prisma/client";
 
 interface MilestoneListProps {
@@ -117,6 +118,12 @@ function MilestoneItem({ milestone }: { milestone: Milestone }) {
             </Button>
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end">
+            <EditMilestoneDialog milestone={milestone}>
+              <DropdownMenuItem onSelect={(e) => e.preventDefault()}>
+                <Pencil className="h-4 w-4 mr-2" />
+                Edit
+              </DropdownMenuItem>
+            </EditMilestoneDialog>
             <DropdownMenuItem
               onClick={handleDelete}
               className="text-destructive"
