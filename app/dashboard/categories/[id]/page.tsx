@@ -1,19 +1,11 @@
 import { notFound } from "next/navigation";
 import Link from "next/link";
-import { ArrowLeft, Folder, MoreVertical, Pencil, Trash2 } from "lucide-react";
+import { ArrowLeft, Folder } from "lucide-react";
 import { getCategory } from "@/app/actions/categories";
 import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
 import { GoalCard } from "@/components/dashboard/goal-card";
 import { CreateGoalDialog } from "@/components/forms/create-goal-dialog";
-import { DeleteCategoryButton } from "@/components/dashboard/delete-category-button";
-import { EditCategoryDialog } from "@/components/forms/edit-category-dialog";
+import { CategoryActions } from "@/components/dashboard/category-actions";
 
 interface CategoryPageProps {
   params: Promise<{ id: string }>;
@@ -58,30 +50,7 @@ export default async function CategoryPage({ params }: CategoryPageProps) {
 
         <div className="flex items-center gap-2">
           <CreateGoalDialog categoryId={category.id} />
-          <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <Button variant="outline" size="icon">
-                <MoreVertical className="h-4 w-4" />
-              </Button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent align="end">
-              <EditCategoryDialog category={category}>
-                <DropdownMenuItem onSelect={(e) => e.preventDefault()}>
-                  <Pencil className="h-4 w-4 mr-2" />
-                  Edit
-                </DropdownMenuItem>
-              </EditCategoryDialog>
-              <DeleteCategoryButton categoryId={category.id} categoryName={category.name}>
-                <DropdownMenuItem
-                  onSelect={(e) => e.preventDefault()}
-                  className="text-destructive"
-                >
-                  <Trash2 className="h-4 w-4 mr-2" />
-                  Delete
-                </DropdownMenuItem>
-              </DeleteCategoryButton>
-            </DropdownMenuContent>
-          </DropdownMenu>
+          <CategoryActions category={category} />
         </div>
       </div>
 

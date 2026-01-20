@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useOptimistic, useTransition } from "react";
 import { Check, Circle, Calendar, Trash2, MoreVertical, Pencil } from "lucide-react";
 import { toggleMilestoneStatus, deleteMilestone } from "@/app/actions/milestones";
 import { Card } from "@/components/ui/card";
@@ -14,6 +14,11 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { EditMilestoneDialog } from "@/components/forms/edit-milestone-dialog";
 import type { Milestone } from "@prisma/client";
+
+function formatDate(date: Date | string): string {
+  const d = new Date(date);
+  return d.toISOString().split("T")[0];
+}
 
 interface MilestoneListProps {
   milestones: Milestone[];
@@ -45,49 +50,52 @@ export function MilestoneList({ milestones, goalId }: MilestoneListProps) {
 }
 
 function MilestoneItem({ milestone }: { milestone: Milestone }) {
-  const [loading, setLoading] = useState(false);
-  const isCompleted = milestone.status === "COMPLETED";
+  const [isPending, startTransition] = useTransition();
+  const [optimisticStatus, setOptimisticStatus] = useOptimistic(
+    milestone.status,
+    (_, newStatus: "PENDING" | "COMPLETED") => newStatus
+  );
 
-  async function handleToggle() {
-    setLoading(true);
-    try {
-      await toggleMilestoneStatus(milestone.id);
-    } catch (error) {
-      console.error("Failed to toggle milestone:", error);
-    } finally {
-      setLoading(false);
-    }
+  const isCompleted = optimisticStatus === "COMPLETED";
+
+  function handleToggle() {
+    const newStatus = isCompleted ? "PENDING" : "COMPLETED";
+    startTransition(async () => {
+      setOptimisticStatus(newStatus);
+      try {
+        await toggleMilestoneStatus(milestone.id);
+      } catch (error) {
+        console.error("Failed to toggle milestone:", error);
+      }
+    });
   }
 
   async function handleDelete() {
-    setLoading(true);
     try {
       await deleteMilestone(milestone.id);
     } catch (error) {
       console.error("Failed to delete milestone:", error);
-    } finally {
-      setLoading(false);
     }
   }
 
   return (
-    <Card className={`p-4 ${isCompleted ? "bg-muted/50" : ""}`}>
+    <Card className={`p-4 transition-colors ${isCompleted ? "bg-muted/50" : ""}`}>
       <div className="flex items-start gap-3">
         <button
           onClick={handleToggle}
-          disabled={loading}
-          className={`mt-0.5 w-5 h-5 rounded-full border-2 flex items-center justify-center shrink-0 transition-colors ${
+          disabled={isPending}
+          className={`mt-0.5 w-5 h-5 rounded-full border-2 flex items-center justify-center shrink-0 transition-all ${
             isCompleted
               ? "bg-green-500 border-green-500 text-white"
               : "border-muted-foreground hover:border-primary"
-          }`}
+          } ${isPending ? "opacity-50" : ""}`}
         >
           {isCompleted && <Check className="h-3 w-3" />}
         </button>
 
         <div className="flex-1 min-w-0">
           <p
-            className={`font-medium ${
+            className={`font-medium transition-all ${
               isCompleted ? "line-through text-muted-foreground" : ""
             }`}
           >
@@ -100,12 +108,12 @@ function MilestoneItem({ milestone }: { milestone: Milestone }) {
             {milestone.dueDate && (
               <span className="flex items-center gap-1 text-xs text-muted-foreground">
                 <Calendar className="h-3 w-3" />
-                {new Date(milestone.dueDate).toLocaleDateString()}
+                {formatDate(milestone.dueDate)}
               </span>
             )}
             {isCompleted && milestone.completedAt && (
               <Badge variant="secondary" className="text-xs">
-                Completed {new Date(milestone.completedAt).toLocaleDateString()}
+                Completed {formatDate(milestone.completedAt)}
               </Badge>
             )}
           </div>
@@ -127,7 +135,6 @@ function MilestoneItem({ milestone }: { milestone: Milestone }) {
             <DropdownMenuItem
               onClick={handleDelete}
               className="text-destructive"
-              disabled={loading}
             >
               <Trash2 className="h-4 w-4 mr-2" />
               Delete

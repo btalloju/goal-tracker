@@ -1,30 +1,15 @@
 import { notFound } from "next/navigation";
 import Link from "next/link";
-import {
-  ArrowLeft,
-  Target,
-  MoreVertical,
-  Pencil,
-  Trash2,
-  Calendar,
-  Flag,
-} from "lucide-react";
+import { ArrowLeft, Target, Calendar, Flag } from "lucide-react";
 import { getGoal } from "@/app/actions/goals";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Progress } from "@/components/ui/progress";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
 import { MilestoneList } from "@/components/dashboard/milestone-list";
 import { CreateMilestoneDialog } from "@/components/forms/create-milestone-dialog";
-import { EditGoalDialog } from "@/components/forms/edit-goal-dialog";
-import { DeleteGoalButton } from "@/components/dashboard/delete-goal-button";
 import { GoalStatusSelect } from "@/components/dashboard/goal-status-select";
+import { GoalActions } from "@/components/dashboard/goal-actions";
 import type { GoalStatus, Priority } from "@prisma/client";
 
 interface GoalPageProps {
@@ -113,34 +98,7 @@ export default async function GoalPage({ params }: GoalPageProps) {
 
         <div className="flex items-center gap-2">
           <GoalStatusSelect goalId={goal.id} currentStatus={goal.status} />
-          <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <Button variant="outline" size="icon">
-                <MoreVertical className="h-4 w-4" />
-              </Button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent align="end">
-              <EditGoalDialog goal={goal}>
-                <DropdownMenuItem onSelect={(e) => e.preventDefault()}>
-                  <Pencil className="h-4 w-4 mr-2" />
-                  Edit
-                </DropdownMenuItem>
-              </EditGoalDialog>
-              <DeleteGoalButton
-                goalId={goal.id}
-                goalTitle={goal.title}
-                categoryId={goal.categoryId}
-              >
-                <DropdownMenuItem
-                  onSelect={(e) => e.preventDefault()}
-                  className="text-destructive"
-                >
-                  <Trash2 className="h-4 w-4 mr-2" />
-                  Delete
-                </DropdownMenuItem>
-              </DeleteGoalButton>
-            </DropdownMenuContent>
-          </DropdownMenu>
+          <GoalActions goal={goal} />
         </div>
       </div>
 
