@@ -39,7 +39,7 @@ We are committed to providing a welcoming and inclusive experience for everyone.
    ```
 3. Add the upstream remote:
    ```bash
-   git remote add upstream https://github.com/ORIGINAL_OWNER/goal-tracker.git
+   git remote add upstream https://github.com/btalloju/goal-tracker.git
    ```
 
 ### Environment Setup

@@ -2,6 +2,8 @@
 
 A modern, open-source goal tracking application built with Next.js. Organize your goals into categories, break them down into milestones, and track your progress towards achieving your dreams.
 
+**Live Demo:** [goal-tracker-ivory-eight.vercel.app](https://goal-tracker-ivory-eight.vercel.app)
+
 ## Features
 
 - **Google Authentication** - Secure sign-in with your Google account
@@ -9,6 +11,7 @@ A modern, open-source goal tracking application built with Next.js. Organize you
 - **Goals** - Create goals with priorities, target dates, and status tracking
 - **Milestones** - Break down goals into actionable milestones with due dates
 - **Progress Tracking** - Visual progress indicators and completion rates
+- **Optimistic Updates** - Instant UI feedback for a snappy experience
 - **Mobile Responsive** - Works seamlessly on desktop and mobile devices
 
 ## Quick Start
@@ -23,7 +26,7 @@ A modern, open-source goal tracking application built with Next.js. Organize you
 
 1. **Clone the repository**
    ```bash
-   git clone https://github.com/yourusername/goal-tracker.git
+   git clone https://github.com/btalloju/goal-tracker.git
    cd goal-tracker
    ```
 
@@ -86,7 +89,7 @@ npm run dev
 | ORM | [Prisma](https://www.prisma.io/) |
 | Authentication | [NextAuth.js v5](https://authjs.dev/) |
 | Styling | [Tailwind CSS](https://tailwindcss.com/) + [shadcn/ui](https://ui.shadcn.com/) |
-| Deployment | [Vercel](https://vercel.com/) |
+| Deployment | [Vercel](https://vercel.com/) (Singapore region) |
 
 ## Project Structure
 
@@ -98,6 +101,7 @@ goal-tracker/
 │   └── dashboard/         # Protected dashboard pages
 ├── components/            # React components
 │   ├── auth/             # Authentication components
+│   ├── dashboard/        # Dashboard components
 │   ├── forms/            # Form components
 │   └── ui/               # shadcn/ui components
 ├── lib/                   # Utility functions and configurations

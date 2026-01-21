@@ -18,7 +18,7 @@ Welcome to Goal Tracker! This guide will help you get started and make the most 
 
 ### Creating Your Account
 
-1. Visit [Goal Tracker](https://your-app-url.vercel.app)
+1. Visit [Goal Tracker](https://goal-tracker-ivory-eight.vercel.app)
 2. Click **Sign in with Google**
 3. Select your Google account
 4. You're in! You'll be redirected to your dashboard
@@ -285,7 +285,7 @@ All your data will be permanently removed.
 
 ### I found a bug / have a feature request
 
-Please open an issue on our [GitHub repository](https://github.com/yourusername/goal-tracker/issues). We appreciate your feedback!
+Please open an issue on our [GitHub repository](https://github.com/btalloju/goal-tracker/issues). We appreciate your feedback!
 
 ---
 
@@ -302,7 +302,7 @@ Please open an issue on our [GitHub repository](https://github.com/yourusername/
 
 ## Need More Help?
 
-- Check our [GitHub Issues](https://github.com/yourusername/goal-tracker/issues) for known issues
+- Check our [GitHub Issues](https://github.com/btalloju/goal-tracker/issues) for known issues
 - Open a new issue if you're stuck
 - We're continuously improving the documentation
 
