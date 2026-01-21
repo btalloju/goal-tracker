@@ -61,6 +61,7 @@ model User {
   sessions   Session[]
   categories Category[]
   goals      Goal[]
+  tasks      Task[]
 
   @@map("users")
 }
@@ -128,7 +129,31 @@ model Milestone {
   createdAt   DateTime        @default(now()) @map("created_at")
   updatedAt   DateTime        @updatedAt @map("updated_at")
 
-  goal Goal @relation(fields: [goalId], references: [id], onDelete: Cascade)
+  goal  Goal   @relation(fields: [goalId], references: [id], onDelete: Cascade)
+  tasks Task[]
 
   @@map("milestones")
+}
+
+model Task {
+  id          String    @id @default(cuid())
+  title       String
+  notes       String?
+  dueDate     DateTime? @map("due_date")
+  completed   Boolean   @default(false)
+  completedAt DateTime? @map("completed_at")
+  position    Int       @default(0)
+
+  // Link to milestone (optional - null for orphaned/quick tasks)
+  milestoneId String?    @map("milestone_id")
+  milestone   Milestone? @relation(fields: [milestoneId], references: [id], onDelete: SetNull)
+
+  // Owner
+  userId    String   @map("user_id")
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  @@map("tasks")
 }

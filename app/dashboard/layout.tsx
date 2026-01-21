@@ -1,3 +1,4 @@
+import { Suspense } from "react";
 import Link from "next/link";
 import { Target, LayoutDashboard, Settings } from "lucide-react";
 import { auth } from "@/lib/auth";
@@ -10,6 +11,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { SignOutButton } from "@/components/auth/sign-out-button";
+import { TaskBoardWrapper } from "@/components/taskboard/task-board-wrapper";
 
 export default async function DashboardLayout({
   children,
@@ -78,6 +80,11 @@ export default async function DashboardLayout({
 
       {/* Main Content */}
       <main className="flex-1 container mx-auto px-4 py-6">{children}</main>
+
+      {/* Task Board */}
+      <Suspense fallback={null}>
+        <TaskBoardWrapper />
+      </Suspense>
     </div>
   );
 }
