@@ -1,6 +1,6 @@
-# Goal Tracker
+# Questive
 
-A modern, open-source goal tracking application built with Next.js. Organize your goals into categories, break them down into milestones, and track your progress towards achieving your dreams.
+Your life goals, intelligently prioritized. Questive transforms overwhelming life goals into an achievable daily practice by helping you prioritize what matters, break down ambitious dreams into actionable steps, and maintain sustainable momentum without burnout.
 
 **Live Demo:** [goal-tracker-ivory-eight.vercel.app](https://goal-tracker-ivory-eight.vercel.app)
 
@@ -10,8 +10,9 @@ A modern, open-source goal tracking application built with Next.js. Organize you
 - **Categories** - Organize goals by life areas (Health, Career, Personal, etc.)
 - **Goals** - Create goals with priorities, target dates, and status tracking
 - **Milestones** - Break down goals into actionable milestones with due dates
+- **Task Board** - Daily task management with goal integration
 - **Progress Tracking** - Visual progress indicators and completion rates
-- **Optimistic Updates** - Instant UI feedback for a snappy experience
+- **Theme Support** - Light, dark, and system themes
 - **Mobile Responsive** - Works seamlessly on desktop and mobile devices
 
 ## Quick Start
@@ -94,7 +95,7 @@ npm run dev
 ## Project Structure
 
 ```
-goal-tracker/
+questive/
 ├── app/                    # Next.js App Router pages
 │   ├── actions/           # Server actions (CRUD operations)
 │   ├── api/               # API routes (auth)
@@ -103,6 +104,8 @@ goal-tracker/
 │   ├── auth/             # Authentication components
 │   ├── dashboard/        # Dashboard components
 │   ├── forms/            # Form components
+│   ├── settings/         # Settings components
+│   ├── taskboard/        # Task board components
 │   └── ui/               # shadcn/ui components
 ├── lib/                   # Utility functions and configurations
 ├── prisma/               # Database schema

@@ -1,6 +1,6 @@
 import { Suspense } from "react";
 import Link from "next/link";
-import { Target, LayoutDashboard, Settings } from "lucide-react";
+import { Compass, LayoutDashboard, Settings } from "lucide-react";
 import { auth } from "@/lib/auth";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import {
@@ -27,8 +27,8 @@ export default async function DashboardLayout({
       <header className="border-b bg-background sticky top-0 z-50">
         <div className="container mx-auto px-4 py-3 flex items-center justify-between">
           <Link href="/dashboard" className="flex items-center gap-2">
-            <Target className="h-6 w-6 text-primary" />
-            <span className="text-lg font-bold">Goal Tracker</span>
+            <Compass className="h-6 w-6 text-primary" />
+            <span className="text-lg font-bold">Questive</span>
           </Link>
 
           <nav className="hidden md:flex items-center gap-6">
