@@ -1,6 +1,6 @@
 # Architecture
 
-This document describes the system architecture, data flow, and security measures of Goal Tracker.
+This document describes the system architecture, data flow, and security measures of Questive.
 
 ## Table of Contents
 
@@ -15,7 +15,7 @@ This document describes the system architecture, data flow, and security measure
 
 ## System Overview
 
-Goal Tracker is a serverless application built on Next.js and deployed on Vercel. The architecture follows a modern JAMstack approach with server-side rendering and server actions for data mutations.
+Questive is a serverless application built on Next.js and deployed on Vercel. The architecture follows a modern JAMstack approach with server-side rendering and server actions for data mutations.
 
 ### Key Design Principles
 
@@ -121,7 +121,7 @@ Goal Tracker is a serverless application built on Next.js and deployed on Vercel
 
 ## Authentication Flow
 
-Goal Tracker uses NextAuth.js v5 with Google OAuth for authentication.
+Questive uses NextAuth.js v5 with Google OAuth for authentication.
 
 ### Sign-In Flow
 

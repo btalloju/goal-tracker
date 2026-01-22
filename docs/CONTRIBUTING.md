@@ -1,6 +1,6 @@
-# Contributing to Goal Tracker
+# Contributing to Questive
 
-Thank you for your interest in contributing to Goal Tracker! This document provides guidelines and information for contributors.
+Thank you for your interest in contributing to Questive! This document provides guidelines and information for contributors.
 
 ## Table of Contents
 

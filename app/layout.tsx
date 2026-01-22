@@ -10,8 +10,8 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
-  title: "Goal Tracker",
-  description: "Track your goals, milestones, and achievements",
+  title: "Questive",
+  description: "Your life goals, intelligently prioritized",
 };
 
 export default function RootLayout({

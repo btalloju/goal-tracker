@@ -1,6 +1,6 @@
 # User Guide
 
-Welcome to Goal Tracker! This guide will help you get started and make the most of the application.
+Welcome to Questive! This guide will help you get started and make the most of the application.
 
 ## Table of Contents
 
@@ -18,7 +18,7 @@ Welcome to Goal Tracker! This guide will help you get started and make the most 
 
 ### Creating Your Account
 
-1. Visit [Goal Tracker](https://goal-tracker-ivory-eight.vercel.app)
+1. Visit [Questive](https://goal-tracker-ivory-eight.vercel.app)
 2. Click **Sign in with Google**
 3. Select your Google account
 4. You're in! You'll be redirected to your dashboard
@@ -37,7 +37,7 @@ The dashboard is your home base for tracking all your goals.
 
 ```
 ┌─────────────────────────────────────────────────────────────────┐
-│  Goal Tracker                               [User Menu]         │
+│  Questive                               [User Menu]         │
 ├─────────────────────────────────────────────────────────────────┤
 │                                                                 │
 │  ┌─────────────────────────────────────────────────────────┐   │
@@ -255,7 +255,7 @@ Your profile picture comes from your Google account. Update it there and it will
 
 ### Can I share goals with others?
 
-Not currently. Goal Tracker is designed for personal use. Team features may come in a future update.
+Not currently. Questive is designed for personal use. Team features may come in a future update.
 
 ### How do I export my data?
 
@@ -271,9 +271,9 @@ Yes! Your data is:
 
 See our [Architecture document](ARCHITECTURE.md#security) for technical details.
 
-### Can I use Goal Tracker offline?
+### Can I use Questive offline?
 
-Currently, Goal Tracker requires an internet connection. Offline support is on our roadmap.
+Currently, Questive requires an internet connection. Offline support is on our roadmap.
 
 ### How do I delete my account?
 
