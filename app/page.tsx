@@ -1,4 +1,5 @@
-import { Compass, Zap, Brain, Shield } from "lucide-react";
+import { Compass, Zap, Brain, Shield, Github } from "lucide-react";
+import Link from "next/link";
 import { SignInButton } from "@/components/auth/sign-in-button";
 
 export default function Home() {
@@ -72,8 +73,17 @@ export default function Home() {
 
       {/* Footer */}
       <footer className="border-t py-6">
-        <div className="container mx-auto px-4 text-center text-sm text-muted-foreground">
-          Questive - Your life&apos;s quest, optimized.
+        <div className="container mx-auto px-4 flex flex-col sm:flex-row items-center justify-between gap-4 text-sm text-muted-foreground">
+          <span>Questive - Your life&apos;s quest, optimized.</span>
+          <Link
+            href="https://github.com/btalloju/goal-tracker"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="flex items-center gap-2 hover:text-foreground transition-colors"
+          >
+            <Github className="h-4 w-4" />
+            <span>Open source on GitHub</span>
+          </Link>
         </div>
       </footer>
     </div>

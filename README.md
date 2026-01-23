@@ -2,89 +2,77 @@
 
 Your life goals, intelligently prioritized. Questive transforms overwhelming life goals into an achievable daily practice by helping you prioritize what matters, break down ambitious dreams into actionable steps, and maintain sustainable momentum without burnout.
 
-**Live Demo:** [goal-tracker-ivory-eight.vercel.app](https://goal-tracker-ivory-eight.vercel.app)
+<p align="center">
+  <a href="https://goal-tracker-ivory-eight.vercel.app"><strong>Try Questive Now</strong></a>
+</p>
 
-## Features
+---
 
-- **Google Authentication** - Secure sign-in with your Google account
-- **Categories** - Organize goals by life areas (Health, Career, Personal, etc.)
-- **Goals** - Create goals with priorities, target dates, and status tracking
-- **Milestones** - Break down goals into actionable milestones with due dates
-- **AI-Powered Milestone Suggestions** - Automatically generate milestones for your goals using AI
-- **Task Board** - Daily task management with goal integration
-- **AI Task Prioritization** - Let AI prioritize your tasks based on deadlines and goal importance
-- **Progress Tracking** - Visual progress indicators and completion rates
-- **Theme Support** - Light, dark, and system themes
-- **Mobile Responsive** - Works seamlessly on desktop and mobile devices
+## What is Questive?
 
-## Quick Start
+Questive is a free, open-source goal tracking application that helps you:
 
-### Prerequisites
+- **Organize your life** - Create categories for different areas (Health, Career, Personal, Learning)
+- **Set meaningful goals** - Define goals with priorities, target dates, and progress tracking
+- **Break down the journey** - Split goals into actionable milestones with due dates
+- **Stay focused daily** - Use the task board to know exactly what to work on today
+- **Let AI help** - Generate milestones automatically and let AI prioritize your tasks
 
-- [Node.js](https://nodejs.org/) 18.x or higher
-- [Docker Desktop](https://www.docker.com/products/docker-desktop/) (for local development)
-- [Google Cloud Console](https://console.cloud.google.com/) account (for OAuth)
+### AI-Powered Features
 
-### Local Development Setup
+- **Smart Milestone Suggestions** - Enter a goal and let AI break it down into achievable steps
+- **Intelligent Task Prioritization** - AI analyzes deadlines, goal importance, and dependencies to order your daily tasks
 
-1. **Clone the repository**
-   ```bash
-   git clone https://github.com/btalloju/goal-tracker.git
-   cd goal-tracker
-   ```
+---
 
-2. **Install dependencies**
-   ```bash
-   npm install
-   ```
+## Get Started
 
-3. **Set up environment variables**
-   ```bash
-   cp .env.local.example .env.local
-   ```
+**[Read the User Guide](docs/USER_GUIDE.md)** to learn how to make the most of Questive.
 
-   Edit `.env.local` with your credentials:
-   - `DATABASE_URL` - Local PostgreSQL connection string (pre-configured for Docker)
-   - `AUTH_SECRET` - Generate with `openssl rand -base64 32`
-   - `GOOGLE_CLIENT_ID` - From Google Cloud Console
-   - `GOOGLE_CLIENT_SECRET` - From Google Cloud Console
-   - `GOOGLE_AI_API_KEY` - From [Google AI Studio](https://aistudio.google.com/apikey) (optional, for AI features)
+Quick links:
+- [Creating Categories](docs/USER_GUIDE.md#managing-categories)
+- [Setting Goals](docs/USER_GUIDE.md#managing-goals)
+- [Using Milestones](docs/USER_GUIDE.md#working-with-milestones)
+- [AI Features](docs/USER_GUIDE.md#ai-features)
+- [Tips for Success](docs/USER_GUIDE.md#tips-for-success)
 
-4. **Start the database**
-   ```bash
-   docker compose up -d
-   ```
+---
 
-5. **Push the database schema**
-   ```bash
-   npx prisma db push
-   ```
+## For Developers
 
-6. **Start the development server**
-   ```bash
-   npm run dev
-   ```
+### Quick Start
 
-7. **Open your browser**
-   Navigate to [http://localhost:3000](http://localhost:3000)
+**Prerequisites:** Node.js 18+, Docker Desktop, Google Cloud Console account
 
-### Using the Setup Script
-
-Alternatively, run the automated setup:
 ```bash
-./scripts/dev-setup.sh
+# Clone and install
+git clone https://github.com/btalloju/goal-tracker.git
+cd goal-tracker
+npm install
+
+# Configure environment
+cp .env.local.example .env.local
+# Edit .env.local with your credentials
+
+# Start database and run
+docker compose up -d
+npx prisma db push
 npm run dev
 ```
 
-## Documentation
+Open [http://localhost:3000](http://localhost:3000)
 
-| Document | Description |
-|----------|-------------|
-| [Architecture](docs/ARCHITECTURE.md) | System design, data flow, and security |
-| [Contributing](docs/CONTRIBUTING.md) | Guide for contributors |
-| [User Guide](docs/USER_GUIDE.md) | How to use the application |
+### Environment Variables
 
-## Tech Stack
+| Variable | Description | Required |
+|----------|-------------|----------|
+| `DATABASE_URL` | PostgreSQL connection string | Yes |
+| `AUTH_SECRET` | Generate with `openssl rand -base64 32` | Yes |
+| `GOOGLE_CLIENT_ID` | From Google Cloud Console | Yes |
+| `GOOGLE_CLIENT_SECRET` | From Google Cloud Console | Yes |
+| `GOOGLE_AI_API_KEY` | From [Google AI Studio](https://aistudio.google.com/apikey) | No (enables AI) |
+
+### Tech Stack
 
 | Layer | Technology |
 |-------|------------|
@@ -94,9 +82,17 @@ npm run dev
 | Authentication | [NextAuth.js v5](https://authjs.dev/) |
 | AI | [Google Gemini](https://ai.google.dev/) (gemini-2.5-flash) |
 | Styling | [Tailwind CSS](https://tailwindcss.com/) + [shadcn/ui](https://ui.shadcn.com/) |
-| Deployment | [Vercel](https://vercel.com/) (Singapore region) |
+| Deployment | [Vercel](https://vercel.com/) |
 
-## Project Structure
+### Documentation
+
+| Document | Description |
+|----------|-------------|
+| [Architecture](docs/ARCHITECTURE.md) | System design, data flow, and security |
+| [Contributing](docs/CONTRIBUTING.md) | Guide for contributors |
+| [User Guide](docs/USER_GUIDE.md) | How to use the application |
+
+### Project Structure
 
 ```
 questive/
@@ -119,21 +115,12 @@ questive/
 └── scripts/              # Development scripts
 ```
 
+---
+
 ## Contributing
 
-We welcome contributions! Please see our [Contributing Guide](docs/CONTRIBUTING.md) for details on:
-
-- Setting up the development environment
-- Code style and conventions
-- Submitting pull requests
-- Reporting issues
+We welcome contributions! Please see our [Contributing Guide](docs/CONTRIBUTING.md) for details.
 
 ## License
 
 This project is open source and available under the [MIT License](LICENSE).
-
-## Acknowledgments
-
-- [shadcn/ui](https://ui.shadcn.com/) for the beautiful UI components
-- [Vercel](https://vercel.com/) for hosting and deployment
-- [Neon](https://neon.tech/) for serverless PostgreSQL
