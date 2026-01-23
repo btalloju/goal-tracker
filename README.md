@@ -10,7 +10,9 @@ Your life goals, intelligently prioritized. Questive transforms overwhelming lif
 - **Categories** - Organize goals by life areas (Health, Career, Personal, etc.)
 - **Goals** - Create goals with priorities, target dates, and status tracking
 - **Milestones** - Break down goals into actionable milestones with due dates
+- **AI-Powered Milestone Suggestions** - Automatically generate milestones for your goals using AI
 - **Task Board** - Daily task management with goal integration
+- **AI Task Prioritization** - Let AI prioritize your tasks based on deadlines and goal importance
 - **Progress Tracking** - Visual progress indicators and completion rates
 - **Theme Support** - Light, dark, and system themes
 - **Mobile Responsive** - Works seamlessly on desktop and mobile devices
@@ -46,6 +48,7 @@ Your life goals, intelligently prioritized. Questive transforms overwhelming lif
    - `AUTH_SECRET` - Generate with `openssl rand -base64 32`
    - `GOOGLE_CLIENT_ID` - From Google Cloud Console
    - `GOOGLE_CLIENT_SECRET` - From Google Cloud Console
+   - `GOOGLE_AI_API_KEY` - From [Google AI Studio](https://aistudio.google.com/apikey) (optional, for AI features)
 
 4. **Start the database**
    ```bash
@@ -89,6 +92,7 @@ npm run dev
 | Database | [PostgreSQL](https://www.postgresql.org/) via [Neon](https://neon.tech/) |
 | ORM | [Prisma](https://www.prisma.io/) |
 | Authentication | [NextAuth.js v5](https://authjs.dev/) |
+| AI | [Google Gemini](https://ai.google.dev/) (gemini-2.5-flash) |
 | Styling | [Tailwind CSS](https://tailwindcss.com/) + [shadcn/ui](https://ui.shadcn.com/) |
 | Deployment | [Vercel](https://vercel.com/) (Singapore region) |
 
@@ -101,6 +105,7 @@ questive/
 │   ├── api/               # API routes (auth)
 │   └── dashboard/         # Protected dashboard pages
 ├── components/            # React components
+│   ├── ai/               # AI feature components
 │   ├── auth/             # Authentication components
 │   ├── dashboard/        # Dashboard components
 │   ├── forms/            # Form components
@@ -108,6 +113,7 @@ questive/
 │   ├── taskboard/        # Task board components
 │   └── ui/               # shadcn/ui components
 ├── lib/                   # Utility functions and configurations
+│   └── ai/               # AI integrations (Gemini)
 ├── prisma/               # Database schema
 ├── docs/                 # Documentation
 └── scripts/              # Development scripts

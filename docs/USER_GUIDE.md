@@ -9,6 +9,7 @@ Welcome to Questive! This guide will help you get started and make the most of t
 - [Managing Categories](#managing-categories)
 - [Managing Goals](#managing-goals)
 - [Working with Milestones](#working-with-milestones)
+- [AI Features](#ai-features)
 - [Tips for Success](#tips-for-success)
 - [FAQ](#faq)
 
@@ -123,7 +124,9 @@ Goals are specific objectives you want to achieve.
    - **Description** - Additional details (optional)
    - **Priority** - Low, Medium, or High
    - **Target Date** - When you want to complete it
-4. Click **Create**
+4. (Optional) Click **AI Suggest** to automatically generate milestones
+5. Review and select the milestones you want to include
+6. Click **Create** or **Create with Milestones**
 
 ### Goal Properties
 
@@ -211,6 +214,50 @@ Use the notes field for:
 - Recording lessons learned
 - Noting blockers or challenges
 - Celebrating wins
+
+---
+
+## AI Features
+
+Questive includes AI-powered features to help you achieve your goals more effectively.
+
+### AI Milestone Suggestions
+
+When creating a new goal, you can use AI to automatically generate relevant milestones:
+
+1. Enter your goal title (and optionally a description)
+2. Click the **AI Suggest** button
+3. Review the suggested milestones
+4. Select the ones you want to include
+5. Click **Accept Selected** to add them to your goal
+
+**Tips for better suggestions:**
+- Be specific with your goal title
+- Add a description for more context
+- Review and adjust milestone timelines as needed
+
+### AI Task Prioritization
+
+The Task Board includes an AI-powered prioritization feature:
+
+1. Open the Task Board (collapsible panel on the right)
+2. Ensure you have at least 2 incomplete tasks
+3. Click **Prioritize for me**
+4. AI will reorder your tasks based on:
+   - Due dates and urgency
+   - Goal priorities
+   - Milestone deadlines
+   - Logical task dependencies
+
+The AI will explain its reasoning after reordering, so you understand why tasks were prioritized that way.
+
+### AI Availability
+
+AI features require a Google AI API key to be configured. If AI features are not available:
+- The **AI Suggest** button will be hidden
+- The **Prioritize for me** button will be hidden
+
+Contact your administrator if you need AI features enabled.
 
 ---
 

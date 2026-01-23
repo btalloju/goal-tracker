@@ -55,8 +55,8 @@ Questive is a serverless application built on Next.js and deployed on Vercel. Th
 ┌─────────────────────────────────────────────────────────────────┐
 │                        External Services                         │
 │  ┌─────────────────┐  ┌─────────────────┐  ┌─────────────────┐  │
-│  │ Neon PostgreSQL │  │  Google OAuth   │  │  Vercel Blob    │  │
-│  │   (Database)    │  │ (Authentication)│  │ (Future Images) │  │
+│  │ Neon PostgreSQL │  │  Google OAuth   │  │  Google Gemini  │  │
+│  │   (Database)    │  │ (Authentication)│  │  (AI Features)  │  │
 │  └─────────────────┘  └─────────────────┘  └─────────────────┘  │
 └─────────────────────────────────────────────────────────────────┘
 ```
@@ -78,35 +78,35 @@ Questive is a serverless application built on Next.js and deployed on Vercel. Th
 │ createdAt    │  │    │ userId    ◄──┘  │    │ priority     │
 │ updatedAt    │  │    │ createdAt    │  │    │ targetDate   │
 └──────────────┘  │    │ updatedAt    │  │    │ categoryId◄──┘
-                  │    └──────────────┘  │    │ userId    ◄──┐
-                  │                      │    │ createdAt    │
-                  │                      │    │ updatedAt    │
-                  │                      │    └──────────────┘
-                  │                      │           │
-                  │                      │           ▼
-                  │                      │    ┌──────────────┐
-                  │                      │    │  Milestone   │
-                  │                      │    ├──────────────┤
-                  │                      │    │ id           │
-                  │                      │    │ title        │
-                  │                      │    │ status       │
-                  │                      │    │ dueDate      │
-                  │                      │    │ completedAt  │
-                  │                      │    │ notes        │
-                  │                      └───►│ goalId       │
-                  │                           │ createdAt    │
-                  │                           │ updatedAt    │
-                  │                           └──────────────┘
-                  │
-                  ▼
+       │          │    └──────────────┘  │    │ userId    ◄──┐
+       │          │                      │    │ createdAt    │
+       ▼          │                      │    │ updatedAt    │
+┌──────────────┐  │                      │    └──────────────┘
+│ UserProfile  │  │                      │           │
+├──────────────┤  │                      │           ▼
+│ id           │  │                      │    ┌──────────────┐
+│ userId    ◄──┼──┘                      │    │  Milestone   │
+│ currentRole  │                         │    ├──────────────┤
+│ skills[]     │                         │    │ id           │
+│ skillsGained │                         │    │ title        │
+│ aiCallsToday │                         │    │ status       │
+└──────────────┘                         │    │ dueDate      │
+                                         │    │ completedAt  │
+                                         │    │ notes        │
+                                         └───►│ goalId       │
+                                              │ createdAt    │
+                                              │ updatedAt    │
+                                              └──────────────┘
+
         (All entities cascade delete when User is deleted)
 ```
 
 ### Data Ownership
 
-- Each **User** owns their **Categories** and **Goals**
+- Each **User** owns their **Categories**, **Goals**, and **UserProfile**
 - **Categories** contain **Goals**
 - **Goals** contain **Milestones**
+- **UserProfile** stores user preferences and AI rate limiting data
 - Deleting a User cascades to delete all their data
 
 ### Enums
@@ -163,6 +163,42 @@ Questive uses NextAuth.js v5 with Google OAuth for authentication.
 - Sessions are stored in the database (PostgreSQL)
 - Session tokens are HTTP-only cookies
 - Middleware checks auth state at the edge for protected routes
+
+---
+
+## AI Integration
+
+Questive uses Google Gemini AI to provide intelligent features that help users achieve their goals more effectively.
+
+### AI Features
+
+| Feature | Description | Model |
+|---------|-------------|-------|
+| **Milestone Suggestions** | Automatically generate milestones when creating a goal | gemini-2.5-flash |
+| **Task Prioritization** | AI-powered ordering of tasks based on deadlines and goal importance | gemini-2.5-flash |
+| **Profile Updates** | Auto-update skills gained when goals are completed | gemini-2.5-flash |
+
+### AI Architecture
+
+```
+┌─────────────────┐     ┌─────────────────┐     ┌─────────────────┐
+│   Client UI     │     │  Server Action  │     │  Google Gemini  │
+│  (AI Buttons)   │────►│  (Rate Limited) │────►│      API        │
+└─────────────────┘     └─────────────────┘     └─────────────────┘
+                               │
+                               ▼
+                        ┌─────────────────┐
+                        │   UserProfile   │
+                        │ (aiCallsToday)  │
+                        └─────────────────┘
+```
+
+### Rate Limiting
+
+To prevent abuse and control costs, AI features are rate-limited per user:
+- Tracked via `aiCallsToday` in UserProfile
+- Resets daily based on `lastAICallDate`
+- Configurable limits per feature
 
 ---
 

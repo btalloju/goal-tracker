@@ -60,6 +60,7 @@ We are committed to providing a welcoming and inclusive experience for everyone.
    AUTH_SECRET="generate-with-openssl-rand-base64-32"
    GOOGLE_CLIENT_ID="your-google-client-id"
    GOOGLE_CLIENT_SECRET="your-google-client-secret"
+   GOOGLE_AI_API_KEY="your-google-ai-api-key"  # Optional, for AI features
    ```
 
 4. **Start the database:**
@@ -157,9 +158,11 @@ goal-tracker/
 │   ├── layout.tsx         # Root layout with providers
 │   ├── page.tsx           # Landing page
 │   ├── actions/           # Server actions
+│   │   ├── ai.ts          # AI features (milestones, prioritization)
 │   │   ├── categories.ts  # Category CRUD
 │   │   ├── goals.ts       # Goal CRUD
-│   │   └── milestones.ts  # Milestone CRUD
+│   │   ├── milestones.ts  # Milestone CRUD
+│   │   └── profile.ts     # User profile management
 │   ├── api/
 │   │   └── auth/          # NextAuth API routes
 │   └── dashboard/         # Protected pages
@@ -169,12 +172,15 @@ goal-tracker/
 │       └── goals/         # Goal pages
 │
 ├── components/            # React components
+│   ├── ai/               # AI feature components
 │   ├── auth/             # Auth components (SignInButton, etc.)
 │   ├── dashboard/        # Dashboard-specific components
 │   ├── forms/            # Form components
+│   ├── settings/         # Settings page components
 │   └── ui/               # shadcn/ui components
 │
 ├── lib/                  # Utilities and config
+│   ├── ai/              # AI integrations (Gemini)
 │   ├── auth.ts          # NextAuth configuration
 │   ├── db.ts            # Prisma client
 │   └── utils.ts         # Helper functions
@@ -194,6 +200,7 @@ goal-tracker/
 |------|---------|
 | `lib/auth.ts` | NextAuth.js configuration with Google provider |
 | `lib/db.ts` | Prisma client singleton |
+| `lib/ai/gemini.ts` | Google Gemini AI client configuration |
 | `middleware.ts` | Route protection (redirects unauthenticated users) |
 | `prisma/schema.prisma` | Database models and relations |
 
