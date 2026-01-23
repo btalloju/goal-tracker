@@ -4,6 +4,7 @@ import { revalidatePath } from "next/cache";
 import { auth } from "@/lib/auth";
 import { db } from "@/lib/db";
 import { GoalStatus, Priority } from "@prisma/client";
+import { updateProfileFromCompletion } from "./ai";
 
 export async function getGoals(categoryId?: string) {
   const session = await auth();
@@ -119,6 +120,14 @@ export async function updateGoal(
     where: { id },
     data,
   });
+
+  // Trigger profile update when goal is completed
+  if (data.status === "COMPLETED" && goal.status !== "COMPLETED") {
+    // Run in background - don't block the response
+    updateProfileFromCompletion(id).catch((error) => {
+      console.error("Failed to update profile from goal completion:", error);
+    });
+  }
 
   revalidatePath("/dashboard");
   revalidatePath(`/dashboard/goals/${id}`);

@@ -2,14 +2,20 @@ import { redirect } from "next/navigation";
 import Link from "next/link";
 import { ArrowLeft, Settings } from "lucide-react";
 import { getProfile } from "@/app/actions/account";
+import { getExtendedProfile } from "@/app/actions/profile";
 import { Button } from "@/components/ui/button";
 import { AccountInfo } from "@/components/settings/account-info";
+import { ProfileSection } from "@/components/settings/profile-section";
+import { AISettings } from "@/components/settings/ai-settings";
 import { PrivacySection } from "@/components/settings/privacy-section";
 import { ThemeSelector } from "@/components/settings/theme-selector";
 import { DeleteAccountDialog } from "@/components/settings/delete-account-dialog";
 
 export default async function SettingsPage() {
-  const profile = await getProfile();
+  const [profile, extendedProfile] = await Promise.all([
+    getProfile(),
+    getExtendedProfile(),
+  ]);
 
   if (!profile) {
     redirect("/");
@@ -35,6 +41,8 @@ export default async function SettingsPage() {
       {/* Settings Sections */}
       <div className="max-w-2xl space-y-6">
         <AccountInfo profile={profile} />
+        <ProfileSection profile={extendedProfile} />
+        <AISettings />
         <PrivacySection />
         <ThemeSelector />
         <DeleteAccountDialog />

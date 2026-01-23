@@ -1,12 +1,13 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { ChevronLeft, ChevronRight, ClipboardList } from "lucide-react";
+import { ChevronLeft, ChevronRight, ClipboardList, Sparkles, Loader2, X } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { TaskList } from "./task-list";
 import { CreateTaskInput } from "./create-task-input";
-import type { TaskWithMilestone } from "@/app/actions/tasks";
+import { prioritizeTasks } from "@/app/actions/ai";
+import { reorderTasks, type TaskWithMilestone } from "@/app/actions/tasks";
 
 interface TaskBoardProps {
   tasks: TaskWithMilestone[];
@@ -17,6 +18,9 @@ const STORAGE_KEY = "taskboard-collapsed";
 export function TaskBoard({ tasks }: TaskBoardProps) {
   const [isCollapsed, setIsCollapsed] = useState(true);
   const [mounted, setMounted] = useState(false);
+  const [prioritizing, setPrioritizing] = useState(false);
+  const [aiReasoning, setAiReasoning] = useState<string | null>(null);
+  const [aiError, setAiError] = useState<string | null>(null);
 
   // Load collapsed state from localStorage
   useEffect(() => {
@@ -32,6 +36,50 @@ export function TaskBoard({ tasks }: TaskBoardProps) {
     const newState = !isCollapsed;
     setIsCollapsed(newState);
     localStorage.setItem(STORAGE_KEY, String(newState));
+  }
+
+  async function handlePrioritize() {
+    // Only prioritize incomplete tasks
+    const incompleteTasks = tasks.filter((t) => !t.completed);
+    if (incompleteTasks.length < 2) {
+      setAiError("Need at least 2 incomplete tasks to prioritize.");
+      return;
+    }
+
+    setPrioritizing(true);
+    setAiError(null);
+    setAiReasoning(null);
+
+    const result = await prioritizeTasks(
+      incompleteTasks.map((t) => ({
+        id: t.id,
+        title: t.title,
+        dueDate: t.dueDate,
+        milestone: t.milestone
+          ? {
+              title: t.milestone.title,
+              goal: {
+                title: t.milestone.goal.title,
+                priority: "MEDIUM", // We don't have priority in the milestone hierarchy
+              },
+            }
+          : null,
+      }))
+    );
+
+    setPrioritizing(false);
+
+    if (result.success && result.orderedTaskIds) {
+      // Apply the new order
+      // Combine: AI-ordered incomplete tasks + completed tasks (keep at end)
+      const completedTasks = tasks.filter((t) => t.completed);
+      const newOrder = [...result.orderedTaskIds, ...completedTasks.map((t) => t.id)];
+
+      await reorderTasks(newOrder);
+      setAiReasoning(result.reasoning || null);
+    } else {
+      setAiError(result.error || "Failed to prioritize tasks.");
+    }
   }
 
   const pendingCount = tasks.filter((t) => !t.completed).length;
@@ -85,6 +133,68 @@ export function TaskBoard({ tasks }: TaskBoardProps) {
               <ChevronRight className="h-4 w-4" />
             </Button>
           </div>
+
+          {/* AI Prioritize Button */}
+          {pendingCount >= 2 && (
+            <div className="px-4 pt-3">
+              <Button
+                variant="outline"
+                size="sm"
+                className="w-full gap-2"
+                onClick={handlePrioritize}
+                disabled={prioritizing}
+              >
+                {prioritizing ? (
+                  <>
+                    <Loader2 className="h-4 w-4 animate-spin" />
+                    Prioritizing...
+                  </>
+                ) : (
+                  <>
+                    <Sparkles className="h-4 w-4" />
+                    Prioritize for me
+                  </>
+                )}
+              </Button>
+            </div>
+          )}
+
+          {/* AI Reasoning Banner */}
+          {aiReasoning && (
+            <div className="mx-4 mt-3 p-3 rounded-lg bg-primary/5 border border-primary/20">
+              <div className="flex items-start justify-between gap-2">
+                <div className="flex items-start gap-2">
+                  <Sparkles className="h-4 w-4 text-primary mt-0.5 flex-shrink-0" />
+                  <p className="text-xs text-muted-foreground">{aiReasoning}</p>
+                </div>
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  className="h-5 w-5 flex-shrink-0"
+                  onClick={() => setAiReasoning(null)}
+                >
+                  <X className="h-3 w-3" />
+                </Button>
+              </div>
+            </div>
+          )}
+
+          {/* AI Error */}
+          {aiError && (
+            <div className="mx-4 mt-3 p-3 rounded-lg bg-destructive/10 border border-destructive/20">
+              <div className="flex items-start justify-between gap-2">
+                <p className="text-xs text-destructive">{aiError}</p>
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  className="h-5 w-5 flex-shrink-0"
+                  onClick={() => setAiError(null)}
+                >
+                  <X className="h-3 w-3" />
+                </Button>
+              </div>
+            </div>
+          )}
 
           {/* Task list */}
           <div className="flex-1 overflow-y-auto p-4">

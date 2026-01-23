@@ -62,8 +62,35 @@ model User {
   categories Category[]
   goals      Goal[]
   tasks      Task[]
+  profile    UserProfile?
 
   @@map("users")
+}
+
+model UserProfile {
+  id                  String   @id @default(cuid())
+  userId              String   @unique @map("user_id")
+  user                User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  // User-provided info
+  currentRole         String?  @map("current_role")
+  yearsExperience     Int?     @map("years_experience")
+  company             String?
+  skills              String[] @default([])
+  bio                 String?  @db.VarChar(500)
+
+  // Auto-updated by AI
+  skillsGained        String[] @default([]) @map("skills_gained")
+  completedGoalsCount Int      @default(0) @map("completed_goals_count")
+
+  // AI rate limiting
+  aiCallsToday        Int      @default(0) @map("ai_calls_today")
+  lastAICallDate      DateTime? @map("last_ai_call_date")
+
+  createdAt           DateTime @default(now()) @map("created_at")
+  updatedAt           DateTime @updatedAt @map("updated_at")
+
+  @@map("user_profiles")
 }
 
 model Category {
