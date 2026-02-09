@@ -57,12 +57,15 @@ model User {
   createdAt     DateTime  @default(now()) @map("created_at")
   updatedAt     DateTime  @updatedAt @map("updated_at")
 
-  accounts   Account[]
-  sessions   Session[]
-  categories Category[]
-  goals      Goal[]
-  tasks      Task[]
-  profile    UserProfile?
+  accounts       Account[]
+  sessions       Session[]
+  categories     Category[]
+  goals          Goal[]
+  tasks          Task[]
+  profile        UserProfile?
+  agentCrews     AgentCrew[]
+  crewExecutions CrewExecution[]
+  agentSettings  AgentSettings?
 
   @@map("users")
 }
@@ -179,8 +182,133 @@ model Task {
   userId    String   @map("user_id")
   user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 
+  // Agent assignment
+  agentCrewId     String?   @map("agent_crew_id")
+  agentStatus     String?   @map("agent_status") // "NOT_ASSIGNED" | "PENDING" | "RUNNING" | "COMPLETED" | "FAILED"
+  agentAssignedAt DateTime? @map("agent_assigned_at")
+
+  crewExecutions CrewExecution[]
+
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @updatedAt @map("updated_at")
 
   @@map("tasks")
+}
+
+// ==========================================
+// CrewAI Agent Integration Models
+// ==========================================
+
+// Crew category types for agent classification
+enum CrewCategory {
+  RESEARCH
+  WRITING
+  DATA
+  COMMUNICATION
+}
+
+// Risk levels for agent autonomy
+enum RiskLevel {
+  LOW
+  MEDIUM
+  HIGH
+}
+
+// Execution status for crew runs
+enum ExecutionStatus {
+  PENDING_APPROVAL
+  APPROVED
+  RUNNING
+  COMPLETED
+  FAILED
+  CANCELLED
+}
+
+// CrewAI crew definitions for different task types
+model AgentCrew {
+  id          String       @id @default(cuid())
+  userId      String       @map("user_id")
+  user        User         @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  name        String       // e.g., "Research Crew", "Content Writing Crew"
+  description String?
+  category    CrewCategory
+
+  // CrewAI configuration (JSON) - stores agent roles, tools, process type
+  crewConfig  Json         @map("crew_config")
+
+  riskLevel   RiskLevel    @default(LOW)
+  isActive    Boolean      @default(true) @map("is_active")
+  usageCount  Int          @default(0) @map("usage_count")
+
+  createdAt   DateTime     @default(now()) @map("created_at")
+  updatedAt   DateTime     @updatedAt @map("updated_at")
+
+  executions  CrewExecution[]
+
+  @@index([userId, category])
+  @@map("agent_crews")
+}
+
+// Execution tracking and results
+model CrewExecution {
+  id              String          @id @default(cuid())
+  crewId          String          @map("crew_id")
+  crew            AgentCrew       @relation(fields: [crewId], references: [id], onDelete: Cascade)
+
+  taskId          String?         @map("task_id")
+  task            Task?           @relation(fields: [taskId], references: [id], onDelete: SetNull)
+
+  userId          String          @map("user_id")
+  user            User            @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  status          ExecutionStatus @default(PENDING_APPROVAL)
+
+  // Input/output
+  inputData       Json?           @map("input_data")
+  outputData      Json?           @map("output_data")
+  errorMessage    String?         @map("error_message") @db.Text
+
+  // Progress tracking (from CrewAI callbacks)
+  progressPercent Int             @default(0) @map("progress_percent")
+  currentStep     String?         @map("current_step")
+
+  // Approval workflow
+  requiresApproval Boolean        @default(false) @map("requires_approval")
+  approvedAt       DateTime?      @map("approved_at")
+  approvedBy       String?        @map("approved_by")
+
+  // Artifacts created (docs, sheets, etc.)
+  artifacts       Json?           // Array of {type, url, title}
+
+  startedAt       DateTime?       @map("started_at")
+  completedAt     DateTime?       @map("completed_at")
+
+  createdAt       DateTime        @default(now()) @map("created_at")
+  updatedAt       DateTime        @updatedAt @map("updated_at")
+
+  @@index([userId, status])
+  @@index([taskId])
+  @@index([status, createdAt])
+  @@map("crew_executions")
+}
+
+// User preferences for agent behavior
+model AgentSettings {
+  id                     String    @id @default(cuid())
+  userId                 String    @unique @map("user_id")
+  user                   User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  // Autonomy settings - auto-approve tasks up to this risk level
+  autoApproveRiskLevel   RiskLevel @default(LOW) @map("auto_approve_risk_level")
+
+  // Notifications
+  notifyOnCompletion     Boolean   @default(true) @map("notify_on_completion")
+  notifyOnFailure        Boolean   @default(true) @map("notify_on_failure")
+  notifyOnApprovalNeeded Boolean   @default(true) @map("notify_on_approval_needed")
+
+  createdAt              DateTime  @default(now()) @map("created_at")
+  updatedAt              DateTime  @updatedAt @map("updated_at")
+
+  @@map("agent_settings")
 }
