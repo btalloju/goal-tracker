@@ -1,7 +1,7 @@
 "use client";
 
-import { useState, useEffect } from "react";
-import { Briefcase, GraduationCap, Sparkles, Save, Loader2 } from "lucide-react";
+import { useState } from "react";
+import { GraduationCap, Sparkles, Save, Loader2 } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
