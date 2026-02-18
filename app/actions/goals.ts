@@ -5,6 +5,7 @@ import { auth } from "@/lib/auth";
 import { db } from "@/lib/db";
 import { GoalStatus, Priority } from "@prisma/client";
 import { updateProfileFromCompletion } from "./ai";
+import { aiLogger } from "@/lib/logger";
 
 export async function getGoals(categoryId?: string) {
   const session = await auth();
@@ -125,7 +126,7 @@ export async function updateGoal(
   if (data.status === "COMPLETED" && goal.status !== "COMPLETED") {
     // Run in background - don't block the response
     updateProfileFromCompletion(id).catch((error) => {
-      console.error("Failed to update profile from goal completion:", error);
+      aiLogger.error({ err: error, goalId: id }, "Failed to update profile from goal completion");
     });
   }
 

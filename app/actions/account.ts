@@ -2,6 +2,7 @@
 
 import { auth, signOut } from "@/lib/auth";
 import { db } from "@/lib/db";
+import { authLogger } from "@/lib/logger";
 
 export interface UserProfile {
   id: string;
@@ -48,7 +49,7 @@ export async function deleteAccount(): Promise<{ success: boolean; error?: strin
 
     return { success: true };
   } catch (error) {
-    console.error("Failed to delete account:", error);
+    authLogger.error({ err: error }, "Failed to delete account");
     return { success: false, error: "Failed to delete account" };
   }
 }
