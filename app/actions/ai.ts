@@ -3,6 +3,7 @@
 import { auth } from "@/lib/auth";
 import { db } from "@/lib/db";
 import { getFlashModel, isAIAvailable } from "@/lib/ai/gemini";
+import { aiLogger } from "@/lib/logger";
 
 // Types for AI responses
 export interface SuggestedMilestone {
@@ -151,7 +152,7 @@ Return JSON only (no markdown):
       milestones: parsed.milestones,
     };
   } catch (error) {
-    console.error("AI milestone generation error:", error);
+    aiLogger.error({ err: error }, "AI milestone generation error");
     return {
       success: false,
       error: "Failed to generate milestones. Please try again.",
@@ -220,7 +221,7 @@ Return JSON only (no markdown):
       reasoning: parsed.reasoning,
     };
   } catch (error) {
-    console.error("AI task prioritization error:", error);
+    aiLogger.error({ err: error }, "AI task prioritization error");
     const errorMessage = error instanceof Error ? error.message : String(error);
     return {
       success: false,
@@ -303,7 +304,7 @@ Return JSON only (no markdown):
       skillsGained,
     };
   } catch (error) {
-    console.error("AI profile update error:", error);
+    aiLogger.error({ err: error }, "AI profile update error");
     // Don't return error to user - this is a background operation
     return { success: true, skillsGained: [] };
   }

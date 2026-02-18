@@ -3,6 +3,7 @@
 import { revalidatePath } from "next/cache";
 import { auth } from "@/lib/auth";
 import { db } from "@/lib/db";
+import { dbLogger } from "@/lib/logger";
 
 export interface ExtendedUserProfile {
   id: string;
@@ -66,7 +67,7 @@ export async function createOrUpdateProfile(data: {
     revalidatePath("/dashboard/settings");
     return { success: true };
   } catch (error) {
-    console.error("Failed to update profile:", error);
+    dbLogger.error({ err: error }, "Failed to update profile");
     return { success: false, error: "Failed to update profile" };
   }
 }
