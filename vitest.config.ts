@@ -30,6 +30,14 @@ export default defineConfig({
           setupFiles: ["./tests/setup.ts"],
         },
       },
+      {
+        resolve: { alias },
+        test: {
+          name: "e2e",
+          environment: "node",
+          include: ["tests/e2e/**/*.test.ts"],
+        },
+      },
     ],
     coverage: {
       provider: "v8",
