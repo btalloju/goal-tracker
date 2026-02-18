@@ -88,9 +88,10 @@ Open [http://localhost:3000](http://localhost:3000)
 
 | Document | Description |
 |----------|-------------|
+| [User Guide](docs/USER_GUIDE.md) | How to use the application |
+| [Roadmap](docs/ROADMAP.md) | Project status and development roadmap |
 | [Architecture](docs/ARCHITECTURE.md) | System design, data flow, and security |
 | [Contributing](docs/CONTRIBUTING.md) | Guide for contributors |
-| [User Guide](docs/USER_GUIDE.md) | How to use the application |
 
 ### Project Structure
 

@@ -59,7 +59,7 @@ vi.mock("@/app/actions/ai", () => ({
 }));
 
 // Import code under test
-import { createCategory, getCategories } from "@/app/actions/categories";
+import { createCategory } from "@/app/actions/categories";
 import { createGoal, updateGoal, getDashboardStats } from "@/app/actions/goals";
 import { createMilestone, toggleMilestoneStatus } from "@/app/actions/milestones";
 

@@ -25,7 +25,7 @@ interface MilestoneListProps {
   goalId: string;
 }
 
-export function MilestoneList({ milestones, goalId }: MilestoneListProps) {
+export function MilestoneList({ milestones, goalId: _goalId }: MilestoneListProps) {
   if (milestones.length === 0) {
     return (
       <Card className="p-8 text-center">

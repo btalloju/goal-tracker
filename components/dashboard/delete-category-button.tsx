@@ -3,7 +3,6 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { deleteCategory } from "@/app/actions/categories";
-import { Button } from "@/components/ui/button";
 import {
   AlertDialog,
   AlertDialogAction,
